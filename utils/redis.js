@@ -7,9 +7,6 @@ class RedisClient {
     this.client.on('error', (err) => {
       console.log('Redis error:', err.message);
     });
-    this.client.on('connect', () => {
-      console.log('Redis connected');
-    });
   }
 
   isAlive() {
@@ -23,7 +20,7 @@ class RedisClient {
 
   async set(key, value, duration) {
     const setAsync = promisify(this.client.setex).bind(this.client);
-    return setAsync(key, value, duration);
+    return setAsync(key, duration, value);
   }
 
   async del(key) {
