@@ -2,7 +2,6 @@ import { createClient } from 'redis';
 import { promisify } from 'util';
 
 class RedisClient {
-
   constructor() {
     this.client = createClient();
     this.client.on('error', (err) => {
@@ -31,7 +30,6 @@ class RedisClient {
     const delAsync = promisify(this.client.del).bind(this.client);
     return delAsync(key);
   }
-
 }
 
 const redisClient = new RedisClient();
