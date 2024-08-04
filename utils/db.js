@@ -1,5 +1,4 @@
-// import MongoClient from 'mongodb/lib/mongo_client';
-import { MongoClient } from 'mongodb';
+import MongoClient from 'mongodb/lib/mongo_client';
 
 class DBClient {
   constructor() {
@@ -8,28 +7,24 @@ class DBClient {
     const database = process.env.DB_DATABASE || 'file_manager';
     const url = `mongodb://${host}:${port}/${database}`;
 
-    MongoClient.connect(url, { useUnifiedTopology: true }, (client, err) => {
-      if (err) {
-        console.error(err);
-      } else {
-        this.db = client.db(database);
-        console.log('Connected to MongoDB');
-      }
-    });
+    this.client = new MongoClient(url, { useNewUrlParser: true });
+    this.client.connect();
   }
 
   isAlive() {
-    return Boolean(this.db);
+    return this.client.isConnected();
   }
 
   async nbUsers() {
-    const users = this.db.collection('users');
+    const db = this.client.db();
+    const users = db.collection('users');
     const nbUsers = users.countDocuments({});
     return nbUsers;
   }
 
   async nbFiles() {
-    const files = this.db.collection('files');
+    const db = this.client.db();
+    const files = db.collection('files');
     const nbFiles = files.countDocuments({});
     return nbFiles;
   }
