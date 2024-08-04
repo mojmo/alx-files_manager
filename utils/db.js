@@ -7,12 +7,17 @@ class DBClient {
     const database = process.env.DB_DATABASE || 'file_manager';
     const url = `mongodb://${host}:${port}/${database}`;
 
-    this.client = new MongoClient(url, { useNewUrlParser: true });
+    this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.client.connect();
   }
 
-  isAlive() {
-    return this.client.isConnected();
+  async isAlive() {
+    try {
+      await this.client.db().admin().ping();
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
   async nbUsers() {
