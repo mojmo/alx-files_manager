@@ -9,15 +9,15 @@ class DBClient {
 
     this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.client.connect();
+    try {
+      this.db = this.client.db(database);
+    } catch (err) {
+      this.db = false;
+    }
   }
 
-  async isAlive() {
-    try {
-      await this.client.db().admin().ping();
-      return true;
-    } catch (err) {
-      return false;
-    }
+  isAlive() {
+    return Boolean(this.db);
   }
 
   async nbUsers() {
