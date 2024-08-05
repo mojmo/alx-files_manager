@@ -17,8 +17,8 @@ class DBClient {
       })
       .catch((err) => {
         this.isConnected = false;
-        this.db = false;
-        console.log(err);
+        this.db = null;
+        console.error('Failed to connect to MongoDB:', err);
       });
   }
 

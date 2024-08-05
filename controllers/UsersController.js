@@ -1,5 +1,5 @@
-const { hash } = require('crypto');
-const dbClient = require('../utils/db');
+import sha1 from 'sha1';
+import dbClient from '../utils/db';
 
 module.exports = {
   postNew: async (req, res) => {
@@ -22,7 +22,7 @@ module.exports = {
     }
 
     // Hash the password using SHA1
-    const hashedPassword = hash('sha1').update(password).digest('hex');
+    const hashedPassword = sha1(password);
 
     // Insert the new user into the database
     const result = await usersCollection.insertOne({
