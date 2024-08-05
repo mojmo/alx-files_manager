@@ -27,13 +27,14 @@ module.exports = {
     // Insert the new user into the database
     const result = await usersCollection.insertOne({
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     // Return the new user with only the email and id
     res.status(201).json({
       id: result.insertedId,
-      email
+      email,
     });
-  }
+    return null;
+  },
 };
