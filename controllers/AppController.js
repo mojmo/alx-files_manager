@@ -5,7 +5,7 @@ module.exports = {
   getStatus: (req, res) => {
     res.status(200).json({
       redis: redisClient.isAlive(),
-      db: dbClient.isAlive()
+      db: dbClient.isAlive(),
     });
   },
   getStats: async (req, res) => {
@@ -13,7 +13,7 @@ module.exports = {
     const fileCount = await dbClient.nbFiles();
     res.status(200).json({
       users: userCount,
-      files: fileCount
+      files: fileCount,
     });
-  }
+  },
 };
