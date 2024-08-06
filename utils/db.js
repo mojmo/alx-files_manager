@@ -1,4 +1,4 @@
-import MongoClient from 'mongodb/lib/mongo_client';
+import { MongoClient, ObjectId } from 'mongodb';
 
 class DBClient {
   constructor() {
@@ -38,6 +38,10 @@ class DBClient {
     const files = db.collection('files');
     const nbFiles = files.countDocuments({});
     return nbFiles;
+  }
+
+  ObjectId(id) {
+    return new ObjectId(id);
   }
 }
 
