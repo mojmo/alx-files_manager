@@ -5,6 +5,23 @@ import fs from 'fs';
 import dbClient from './utils/db';
 
 const fileQueue = new Queue('fileQueue', 'redis://127.0.0.1:6379');
+const userQueue = new Queue('userQueue', 'redis://127.0.0.1:6379');
+
+userQueue.process(async (job, done) => {
+  const { userId } = job.data;
+
+  if (!userId) {
+    return done(new Error('Missing userId'));
+  }
+
+  const user = await dbClient.db.collection('users').findOne({ _id: ObjectId(userId) });
+  if (!user) {
+    return done(new Error('User not found'));
+  }
+
+  console.log(`Welcome ${user.email}!`);
+  done();
+});
 
 fileQueue.process(async (job, done) => {
   const { userId, fileId } = job.data;

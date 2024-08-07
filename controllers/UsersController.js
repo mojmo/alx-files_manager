@@ -1,7 +1,12 @@
 import { ObjectId } from 'mongodb';
+import { v4 as uuidv4 } from 'uuid';
+import Queue from 'bull';
+
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
+
+const userQueue = new Queue('userQueue', 'redis://127.0.0.1:6379');
 
 module.exports = {
   postNew: async (req, res) => {
@@ -31,6 +36,10 @@ module.exports = {
       email,
       password: hashedPassword,
     });
+
+    // Add a job to the userQueue
+    await userQueue.add({ userId: result.insertedId.toString() });
+
 
     // Return the new user with only the email and id
     res.status(201).json({
