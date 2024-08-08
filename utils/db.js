@@ -40,7 +40,8 @@ class DBClient {
     return nbFiles;
   }
 
-  static ObjectId(id) {
+  // eslint-disable-next-line class-methods-use-this
+  ObjectId(id) {
     return new ObjectId(id);
   }
 }
