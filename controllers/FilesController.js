@@ -207,7 +207,7 @@ module.exports = {
   getFile: async (req, res) => {
     const fileId = req.params.id;
     const token = req.headers['x-token'];
-    const size = req.query;
+    const size = req.query.size || 0;
 
     const file = await dbClient.db.collection('files').findOne({ _id: dbClient.ObjectId(fileId) });
     if (!file) {
