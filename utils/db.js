@@ -40,7 +40,7 @@ class DBClient {
     return nbFiles;
   }
 
-  ObjectId(id) {
+  static ObjectId(id) {
     return new ObjectId(id);
   }
 }
